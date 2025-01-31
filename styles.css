@@ -1,49 +1,218 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize elements
-    const els = {
-        notepad: document.getElementById('notepad'),
-        charCount: document.getElementById('charCount'),
-        wordCount: document.getElementById('wordCount'),
-        deleteBtn: document.getElementById('deleteBtn'),
-        fontOptions: document.querySelectorAll('.font-option')
-    };
+:root {
+    --primary: #e3e3e3;
+    --secondary: #7C3AED;
+    --danger: #EF4444;
+    --background: #0f172a;
+    --surface: #1e293b;
+    --text: #f8fafc;
+    --border: #334155;
+    --base-size: 14px;
+}
 
-    // Initialize first font
-    const initializeFirstFont = () => {
-        els.fontOptions[0].classList.add('active');
-        els.notepad.style.fontFamily = els.fontOptions[0].dataset.font;
-    };
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    // Font selection handler
-    const handleFontSelection = (event) => {
-        els.fontOptions.forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        els.notepad.style.fontFamily = event.target.dataset.font;
-    };
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.5;
+    font-size: var(--base-size);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+}
 
-    // Update counts function
-    const updateCounts = () => {
-        const text = els.notepad.value.trim();
-        els.charCount.textContent = text.length;
-        els.wordCount.textContent = text === '' ? 0 : text.split(/\s+/).length;
-    };
+.ad-container {
+    width: 160px;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    padding: 20px 10px;
+    z-index: 0;
+}
 
-    // Clear button handler
-    const handleClear = () => {
-        els.notepad.value = '';
-        updateCounts();
-        els.notepad.focus();
-    };
+.left-ad {
+    left: 0;
+    justify-content: flex-end;
+}
 
-    // Event listeners
-    els.fontOptions.forEach(btn => {
-        btn.addEventListener('click', handleFontSelection);
-    });
+.right-ad {
+    right: 0;
+    justify-content: flex-start;
+}
+
+.ad-banner {
+    width: 100%;
+    height: auto;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    position: relative;
+}
+
+.header {
+    text-align: center;
+    margin: 0 0 1rem;
+    padding: 1rem 0 0;
+}
+
+.logo {
+    width: min(100%, 200px);
+    height: auto;
+    margin: 0 auto;
+    filter: invert(1);
+    display: block;
+}
+
+.main-content {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin: 0 0 1rem;
+}
+
+.font-selector {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.font-option {
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 2rem;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9em;
+}
+
+.font-option.active {
+    border-color: var(--secondary);
+    background: rgba(124, 58, 237, 0.1);
+}
+
+.notepad {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    font-size: 1em;
+    resize: vertical;
+    min-height: 40vh;
+    max-height: 60vh;
+    line-height: 1.6;
+    background: var(--surface);
+    color: var(--text);
+}
+
+.stats-bar {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem 0 0;
+    border-top: 1px solid var(--border);
+}
+
+.counter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9em;
+    color: #94a3b8;
+}
+
+.material-icons {
+    font-size: 1.1em;
+    color: var(--primary);
+}
+
+.delete-btn {
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.footer {
+    text-align: center;
+    padding: 1.5rem 0 0.5rem;
+    color: #94a3b8;
+    font-size: 0.85em;
+    margin-top: auto;
+}
+
+@media (max-width: 1200px) {
+    .ad-container {
+        width: 120px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .ad-container {
+        display: none;
+    }
     
-    els.notepad.addEventListener('input', updateCounts);
-    els.deleteBtn.addEventListener('click', handleClear);
+    .container {
+        max-width: 100%;
+        padding: 1rem;
+    }
     
-    // Initial setup
-    initializeFirstFont();
-    updateCounts();
-});
+    .notepad {
+        max-height: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .logo {
+        width: 180px;
+    }
+    
+    .font-selector {
+        gap: 0.6rem;
+    }
+    
+    .notepad {
+        min-height: 50vh;
+    }
+    
+    .stats-bar {
+        gap: 0.8rem;
+    }
+    
+    .delete-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
