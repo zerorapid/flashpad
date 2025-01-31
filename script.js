@@ -1,33 +1,47 @@
-// your code goes here
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize elements
     const notepad = document.getElementById('notepad');
     const charCount = document.getElementById('charCount');
     const wordCount = document.getElementById('wordCount');
     const deleteBtn = document.getElementById('deleteBtn');
     const fontOptions = document.querySelectorAll('.font-option');
 
+    // Initialize first font
+    const initializeFirstFont = () => {
+        fontOptions[0].classList.add('active');
+        notepad.style.fontFamily = fontOptions[0].dataset.font;
+    };
+
+    // Font selection handler
+    const handleFontSelection = (event) => {
+        fontOptions.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        notepad.style.fontFamily = event.target.dataset.font;
+    };
+
+    // Update counts function
     const updateCounts = () => {
         const text = notepad.value.trim();
         charCount.textContent = text.length;
         wordCount.textContent = text === '' ? 0 : text.split(/\s+/).length;
     };
 
-    // Font selection handler
-    fontOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            notepad.style.fontFamily = option.dataset.font;
-            fontOptions.forEach(btn => btn.style.borderColor = '#bdc3c7');
-            option.style.borderColor = '#3498db';
-        });
-    });
-
-    // Text input handler
-    notepad.addEventListener('input', updateCounts);
-
     // Clear button handler
-    deleteBtn.addEventListener('click', () => {
+    const handleClear = () => {
         notepad.value = '';
-        charCount.textContent = '0';
-        wordCount.textContent = '0';
+        updateCounts();
+        notepad.focus();
+    };
+
+    // Event listeners
+    fontOptions.forEach(btn => {
+        btn.addEventListener('click', handleFontSelection);
     });
+    
+    notepad.addEventListener('input', updateCounts);
+    deleteBtn.addEventListener('click', handleClear);
+    
+    // Initial setup
+    initializeFirstFont();
+    updateCounts();
 });
