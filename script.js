@@ -11,64 +11,62 @@ const firebaseConfig = {
 
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
 
-// Save Note Function
-function saveNote() {
-  const text = document.getElementById('editor').value.trim();
-  if (!text) {
-    alert("Cannot save an empty note!");
-    return;
-  }
+      // Save Note Function
+      function saveNote() {
+        const text = document.getElementById('editor').value.trim();
+        if (!text) {
+          alert("Cannot save an empty note!");
+          return;
+        }
 
-  db.collection("notes").add({
-    text: text,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-  })
-  .then(() => {
-    document.getElementById('editor').value = "";
-    loadNotes();
-  })
-  .catch((error) => alert("Error saving note: " + error));
-}
+        addDoc(collection(db, "notes"), {
+          text: text,
+          timestamp: serverTimestamp()
+        })
+        .then(() => {
+          document.getElementById('editor').value = "";
+          loadNotes();
+        })
+        .catch((error) => alert("Error saving note: " + error));
+      }
 
-// Attach Save Button Listener
-document.getElementById('saveButton').addEventListener('click', saveNote);
+      // Attach Save Button Listener
+      document.getElementById('saveButton').addEventListener('click', saveNote);
 
-// Load Notes Function
-function loadNotes() {
-  db.collection("notes")
-    .orderBy("timestamp", "desc")
-    .onSnapshot((snapshot) => {
-      const notesList = document.getElementById('notesList');
-      notesList.innerHTML = "";
-      
-      snapshot.forEach((doc) => {
-        const note = doc.data();
-        const noteElement = document.createElement('div');
-        noteElement.className = 'note-card';
-        noteElement.innerHTML = `
-          <p>${note.text}</p>
-          <button class="btn btn-danger btn-sm deleteButton" data-id="${doc.id}">Delete</button>
-        `;
-        notesList.appendChild(noteElement);
-      });
+      // Load Notes Function
+      function loadNotes() {
+        onSnapshot(collection(db, "notes"), (snapshot) => {
+          const notesList = document.getElementById('notesList');
+          notesList.innerHTML = "";
+          
+          snapshot.forEach((doc) => {
+            const note = doc.data();
+            const noteElement = document.createElement('div');
+            noteElement.className = 'note-card';
+            noteElement.innerHTML = `
+              <p>${note.text}</p>
+              <button class="btn btn-danger btn-sm deleteButton" data-id="${doc.id}">Delete</button>
+            `;
+            notesList.appendChild(noteElement);
+          });
 
-      // Attach delete handlers
-      document.querySelectorAll('.deleteButton').forEach(button => {
-        button.addEventListener('click', () => deleteNote(button.dataset.id));
-      });
-    });
-}
+          // Attach delete handlers
+          document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', () => deleteNote(button.dataset.id));
+          });
+        });
+      }
 
-// Delete Note Function
-function deleteNote(noteId) {
-  if (confirm("Are you sure you want to delete this note?")) {
-    db.collection("notes").doc(noteId).delete()
-      .catch((error) => alert("Error deleting note: " + error));
-  }
-}
+      // Delete Note Function
+      function deleteNote(noteId) {
+        if (confirm("Are you sure you want to delete this note?")) {
+          deleteDoc(doc(db, "notes", noteId))
+            .catch((error) => alert("Error deleting note: " + error));
+        }
+      }
 
-// Initialize on Page Load
-window.onload = loadNotes;
+      // Initialize on Page Load
+      window.onload = loadNotes;
