@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="FlashPad Notepad - A simple and elegant text editor">
     <title>FlashPad Notepad</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Merriweather:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -12,29 +11,27 @@
 <body>
     <div class="ad-container left-ad">
         <img src="https://storage.googleapis.com/website-production/uploads/2023/01/liveplan-banner-ad-example.png" 
-             alt="Advertisement" 
-             class="ad-banner">
+             alt="Advertisement banner" 
+             class="ad-banner" />
     </div>
 
     <div class="container">
-        <header class="header" role="banner">
+        <header class="header">
             <img src="https://i.ibb.co/ymQV49R2/logo-flashpad.png" 
-                 alt="FlashPad Logo" 
-                 class="logo">
+                 alt="FlashPad logo" 
+                 class="logo" />
         </header>
 
-        <main class="main-content" role="main">
-            <div class="font-selector" role="group" aria-label="Font selection">
-                <button class="font-option" data-font="Poppins" type="button" aria-pressed="true">Poppins</button>
-                <button class="font-option" data-font="Caveat" type="button" aria-pressed="false">Caveat</button>
-                <button class="font-option" data-font="Merriweather" type="button" aria-pressed="false">Merriweather</button>
+        <main class="main-content">
+            <div class="font-selector">
+                <button type="button" class="font-option active" data-font="Poppins">Poppins</button>
+                <button type="button" class="font-option" data-font="Caveat">Caveat</button>
+                <button type="button" class="font-option" data-font="Merriweather">Merriweather</button>
             </div>
             
             <textarea class="notepad" 
                       id="notepad" 
-                      placeholder="Start writing here..."
-                      aria-label="Text editor"
-                      spellcheck="true"></textarea>
+                      placeholder="Start writing here..."></textarea>
             
             <div class="stats-bar">
                 <div class="counter" aria-live="polite">
@@ -45,14 +42,14 @@
                     <i class="material-icons" aria-hidden="true">notes</i>
                     <span id="wordCount">0</span> words
                 </div>
-                <button class="delete-btn" id="deleteBtn" type="button" aria-label="Clear all text">
+                <button type="button" class="delete-btn" id="deleteBtn">
                     <i class="material-icons" aria-hidden="true">delete_forever</i>
                     Clear
                 </button>
             </div>
         </main>
 
-        <footer class="footer" role="contentinfo">
+        <footer class="footer">
             <div class="footer-content">
                 &copy; 2023 FlashPad. All rights reserved.
             </div>
@@ -61,10 +58,10 @@
 
     <div class="ad-container right-ad">
         <img src="https://storage.googleapis.com/website-production/uploads/2023/01/liveplan-banner-ad-example.png" 
-             alt="Advertisement" 
-             class="ad-banner">
+             alt="Advertisement banner" 
+             class="ad-banner" />
     </div>
 
-    
+    <script src="script.js"></script>
 </body>
 </html>
