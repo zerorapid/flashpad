@@ -1,67 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlashPad Notepad</title>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Merriweather:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="ad-container left-ad">
-        <img src="https://storage.googleapis.com/website-production/uploads/2023/01/liveplan-banner-ad-example.png" 
-             alt="Advertisement" 
-             class="ad-banner">
-    </div>
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize elements
+    const els = {
+        notepad: document.getElementById('notepad'),
+        charCount: document.getElementById('charCount'),
+        wordCount: document.getElementById('wordCount'),
+        deleteBtn: document.getElementById('deleteBtn'),
+        fontOptions: document.querySelectorAll('.font-option')
+    };
 
-    <div class="container">
-        <header class="header">
-            <img src="https://i.ibb.co/ymQV49R2/logo-flashpad.png" 
-                 alt="FlashPad Logo" 
-                 class="logo">
-        </header>
+    // Initialize first font
+    const initializeFirstFont = () => {
+        els.fontOptions[0].classList.add('active');
+        els.notepad.style.fontFamily = els.fontOptions[0].dataset.font;
+    };
 
-        <main class="main-content">
-            <div class="font-selector">
-                <button class="font-option" data-font="Poppins">Poppins</button>
-                <button class="font-option" data-font="Caveat">Caveat</button>
-                <button class="font-option" data-font="Merriweather">Merriweather</button>
-            </div>
-            
-            <textarea class="notepad" 
-                      id="notepad" 
-                      placeholder="Start writing here..."></textarea>
-            
-            <div class="stats-bar">
-                <div class="counter">
-                    <i class="material-icons">text_fields</i>
-                    <span id="charCount">0</span> chars
-                </div>
-                <div class="counter">
-                    <i class="material-icons">notes</i>
-                    <span id="wordCount">0</span> words
-                </div>
-                <button class="delete-btn" id="deleteBtn">
-                    <i class="material-icons">delete_forever</i>
-                    Clear
-                </button>
-            </div>
-        </main>
+    // Font selection handler
+    const handleFontSelection = (event) => {
+        els.fontOptions.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        els.notepad.style.fontFamily = event.target.dataset.font;
+    };
 
-        <footer class="footer">
-            <div class="footer-content">
-                &copy; 2023 FlashPad. All rights reserved.
-            </div>
-        </footer>
-    </div>
+    // Update counts function
+    const updateCounts = () => {
+        const text = els.notepad.value.trim();
+        els.charCount.textContent = text.length;
+        els.wordCount.textContent = text === '' ? 0 : text.split(/\s+/).length;
+    };
 
-    <div class="ad-container right-ad">
-        <img src="https://storage.googleapis.com/website-production/uploads/2023/01/liveplan-banner-ad-example.png" 
-             alt="Advertisement" 
-             class="ad-banner">
-    </div>
+    // Clear button handler
+    const handleClear = () => {
+        els.notepad.value = '';
+        updateCounts();
+        els.notepad.focus();
+    };
 
-    <script src="script.js"></script>
-</body>
-</html>
+    // Event listeners
+    els.fontOptions.forEach(btn => {
+        btn.addEventListener('click', handleFontSelection);
+    });
+    
+    els.notepad.addEventListener('input', updateCounts);
+    els.deleteBtn.addEventListener('click', handleClear);
+    
+    // Initial setup
+    initializeFirstFont();
+    updateCounts();
+});
