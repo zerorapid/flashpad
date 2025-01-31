@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flashpad - Simple Online Notepad</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="style.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+    <header>
+        <h1 class="text-primary">📝 Flashpad</h1>
+        <p class="text-muted">A simple notepad powered by Firebase</p>
+    </header>
+
+    <!-- Text Editor -->
+    <textarea id="editor" class="form-control mb-3" placeholder="Start typing..."></textarea>
+    <button class="btn btn-primary" onclick="saveNote()">Save Note</button>
+    
+    <!-- Notes List -->
+    <div id="notesList" class="mt-4"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <!-- App Script -->
+    <script src="script.js"></script>
+</body>
+</html>
