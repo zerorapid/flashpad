@@ -1,18 +1,38 @@
 body {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f8f9fa;
+    background-color: #f8f9fa;
+    min-height: 100vh;
 }
 
 #editor {
-  height: 300px;
-  padding: 15px;
-  border: 1px solid #dee2e6;
-  border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    border: 2px solid #dee2e6;
+    transition: border-color 0.3s ease;
 }
 
-#notesList .card {
-  background-color: white;
-  border: 1px solid #dee2e6;
+#editor:focus {
+    border-color: #0d6efd;
+    box-shadow: none;
+}
+
+.note-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.note-card:hover {
+    transform: translateY(-2px);
+}
+
+#saveBtn {
+    width: 120px;
+    font-weight: 500;
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
 }
