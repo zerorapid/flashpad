@@ -1,15 +1,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { 
-    getFirestore, 
-    collection, 
-    addDoc, 
-    onSnapshot,
-    deleteDoc,
-    doc,
-    serverTimestamp 
+    getFirestore, collection, addDoc, onSnapshot, 
+    deleteDoc, doc, serverTimestamp, query, orderBy 
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+import { 
+    getAuth, signInWithPopup, GoogleAuthProvider, 
+    signOut, onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyAOqXxXgSbTfVb91o5jvtiZz8UfWghNJPM",
   authDomain: "flashpad-a98e5.firebaseapp.com",
@@ -21,81 +19,131 @@ const firebaseConfig = {
 
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const notesCollection = collection(db, "notes");
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
 
-// DOM Elements
-const editor = document.getElementById('editor');
+// Rich Text Editor Configuration
+const quill = new Quill('#editor', {
+    modules: {
+        toolbar: [
+            ['bold', 'italic', 'underline'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            ['link', 'image'],
+            ['clean']
+        ]
+    },
+    theme: 'snow'
+});
+
+// UI Elements
+const authButton = document.getElementById('authButton');
 const saveBtn = document.getElementById('saveBtn');
+const exportBtn = document.getElementById('exportBtn');
 const notesList = document.getElementById('notesList');
-const toastEl = document.getElementById('statusToast');
-const toast = new bootstrap.Toast(toastEl);
+const toast = new bootstrap.Toast(document.getElementById('statusToast'));
 
-// Save Note Function
+// Enhanced Save Function
 saveBtn.addEventListener('click', async () => {
-    const content = editor.value.trim();
+    const title = document.getElementById('noteTitle').value.trim();
+    const content = quill.root.innerHTML;
     
-    if (!content) {
-        alert("Please write something before saving!");
+    if (!title || !content) {
+        showToast('Please enter both title and content!', 'danger');
         return;
     }
 
     try {
-        await addDoc(notesCollection, {
+        await addDoc(collection(db, 'notes'), {
+            title,
             content,
-            createdAt: serverTimestamp()
+            createdAt: serverTimestamp(),
+            userId: auth.currentUser?.uid || 'anonymous'
         });
         
-        editor.value = "";
-        toast.show();
-        setTimeout(() => toast.hide(), 2000);
-        
+        quill.setText('');
+        document.getElementById('noteTitle').value = '';
+        showToast('Note saved successfully!', 'success');
     } catch (error) {
-        console.error("Error saving note:", error);
-        alert("Error saving note! Check console for details.");
+        console.error('Save error:', error);
+        showToast('Error saving note!', 'danger');
     }
 });
 
 // Real-time Notes Listener
-onSnapshot(notesCollection, (snapshot) => {
-    notesList.innerHTML = "";
+const q = query(collection(db, 'notes'), orderBy('createdAt', 'desc'));
+onSnapshot(q, (snapshot) => {
+    notesList.innerHTML = '';
     
-    snapshot.docs.forEach(doc => {
+    snapshot.forEach(doc => {
         const note = doc.data();
         const noteEl = document.createElement('div');
-        noteEl.className = "col-md-4 mb-3";
+        noteEl.className = 'col-md-4 mb-3';
         noteEl.innerHTML = `
             <div class="note-card p-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <small class="text-muted">${new Date(note.createdAt?.toDate()).toLocaleString()}</small>
-                    <button class="btn btn-danger btn-sm delete-btn" data-id="${doc.id}">
-                        🗑️
-                    </button>
+                <h5>${note.title}</h5>
+                <div class="text-muted small mb-2">
+                    ${new Date(note.createdAt?.toDate()).toLocaleString()}
                 </div>
-                <p class="mb-0">${note.content}</p>
+                <div class="content-preview">${note.content.substring(0, 100)}...</div>
+                <button class="btn btn-danger btn-sm mt-2 delete-btn" data-id="${doc.id}">
+                    Delete
+                </button>
             </div>
         `;
-        
         notesList.appendChild(noteEl);
     });
 
-    // Add delete handlers
+    // Delete Handlers
     document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', async () => {
-            if (confirm("Are you sure you want to delete this note?")) {
+            if (confirm('Delete this note permanently?')) {
                 try {
-                    await deleteDoc(doc(db, "notes", btn.dataset.id));
+                    await deleteDoc(doc(db, 'notes', btn.dataset.id));
+                    showToast('Note deleted!', 'info');
                 } catch (error) {
-                    console.error("Error deleting note:", error);
+                    console.error('Delete error:', error);
+                    showToast('Error deleting note!', 'danger');
                 }
             }
         });
     });
 });
 
-// Initialize Editor Focus
-window.addEventListener('load', () => {
-    editor.focus();
+// Auth Management
+authButton.addEventListener('click', () => {
+    if (auth.currentUser) {
+        signOut(auth);
+    } else {
+        signInWithPopup(auth, provider);
+    }
 });
+
+onAuthStateChanged(auth, (user) => {
+    authButton.textContent = user ? 'Logout' : 'Login';
+    if (user) showToast(`Welcome ${user.displayName}!`, 'success');
+});
+
+// Export Functionality
+exportBtn.addEventListener('click', () => {
+    const title = document.getElementById('noteTitle').value || 'Untitled';
+    const content = quill.getText();
+    
+    const pdf = new jsPDF();
+    pdf.text(20, 20, title);
+    pdf.text(20, 30, content);
+    pdf.save(`${title}.pdf`);
+});
+
+// Helper Functions
+function showToast(message, type = 'info') {
+    const toastBody = document.querySelector('.toast-body');
+    toastBody.textContent = message;
+    document.getElementById('statusToast').classList.remove('bg-primary', 'bg-success', 'bg-danger');
+    document.getElementById('statusToast').classList.add(`bg-${type}`);
+    toast.show();
+}
+
+// Initialize Editor
+quill.focus();
