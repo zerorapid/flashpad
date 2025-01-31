@@ -1,75 +1,70 @@
-:root {
-    /* Keep previous variables */
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FlashPad Notepad - A simple and elegant text editor">
+    <title>FlashPad Notepad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Merriweather:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="ad-container left-ad">
+        <img src="https://storage.googleapis.com/website-production/uploads/2023/01/liveplan-banner-ad-example.png" 
+             alt="Advertisement" 
+             class="ad-banner">
+    </div>
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    <div class="container">
+        <header class="header" role="banner">
+            <img src="https://i.ibb.co/ymQV49R2/logo-flashpad.png" 
+                 alt="FlashPad Logo" 
+                 class="logo">
+        </header>
 
-body {
-    /* Add overflow control */
-    overflow-x: hidden;
-}
+        <main class="main-content" role="main">
+            <div class="font-selector" role="group" aria-label="Font selection">
+                <button class="font-option" data-font="Poppins" type="button" aria-pressed="true">Poppins</button>
+                <button class="font-option" data-font="Caveat" type="button" aria-pressed="false">Caveat</button>
+                <button class="font-option" data-font="Merriweather" type="button" aria-pressed="false">Merriweather</button>
+            </div>
+            
+            <textarea class="notepad" 
+                      id="notepad" 
+                      placeholder="Start writing here..."
+                      aria-label="Text editor"
+                      spellcheck="true"></textarea>
+            
+            <div class="stats-bar">
+                <div class="counter" aria-live="polite">
+                    <i class="material-icons" aria-hidden="true">text_fields</i>
+                    <span id="charCount">0</span> chars
+                </div>
+                <div class="counter" aria-live="polite">
+                    <i class="material-icons" aria-hidden="true">notes</i>
+                    <span id="wordCount">0</span> words
+                </div>
+                <button class="delete-btn" id="deleteBtn" type="button" aria-label="Clear all text">
+                    <i class="material-icons" aria-hidden="true">delete_forever</i>
+                    Clear
+                </button>
+            </div>
+        </main>
 
-.ad-container {
-    /* Fix z-index issue */
-    z-index: 0;
-}
+        <footer class="footer" role="contentinfo">
+            <div class="footer-content">
+                &copy; 2023 FlashPad. All rights reserved.
+            </div>
+        </footer>
+    </div>
 
-.container {
-    /* Add side margins for ad spacing */
-    margin: 0 180px;
-    /* Fix min-height calculation */
-    min-height: calc(100vh - 140px);
-}
+    <div class="ad-container right-ad">
+        <img src="https://storage.googleapis.com/website-production/uploads/2023/01/liveplan-banner-ad-example.png" 
+             alt="Advertisement" 
+             class="ad-banner">
+    </div>
 
-.main-content {
-    /* Fix content overflow */
-    min-height: auto;
-}
-
-.notepad {
-    /* Better height control */
-    height: 50vh;
-    min-height: 300px;
-    max-height: 600px;
-}
-
-.footer {
-    /* Add proper spacing */
-    margin-top: auto;
-    padding: 2rem 0 1rem;
-}
-
-@media (max-width: 1200px) {
-    .container {
-        margin: 0 140px;
-    }
-}
-
-@media (max-width: 1024px) {
-    .container {
-        margin: 0 20px;
-    }
-    
-    .notepad {
-        height: 60vh;
-    }
-}
-
-@media (max-width: 768px) {
-    .container {
-        margin: 0 10px;
-    }
-    
-    .footer {
-        padding: 1.5rem 0;
-    }
-    
-    .notepad {
-        height: 65vh;
-        min-height: 250px;
-    }
-}
+    <script src="script.js"></script>
+</body>
+</html>
