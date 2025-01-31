@@ -11,55 +11,54 @@
 <body>
     <div class="ad-container left-ad">
         <img src="https://storage.googleapis.com/website-production/uploads/2023/01/liveplan-banner-ad-example.png" 
-             alt="Advertisement banner" 
-             class="ad-banner" />
+             alt="Advertisement" 
+             class="ad-banner">
     </div>
 
-    <div class="container">
+    <div class="main-container">
         <header class="header">
             <img src="https://i.ibb.co/ymQV49R2/logo-flashpad.png" 
-                 alt="FlashPad logo" 
-                 class="logo" />
+                 alt="FlashPad Logo" 
+                 class="logo">
         </header>
 
-        <main class="main-content">
+        <main class="content">
             <div class="font-selector">
-                <button type="button" class="font-option active" data-font="Poppins">Poppins</button>
+                <button type="button" class="font-option" data-font="Poppins">Poppins</button>
                 <button type="button" class="font-option" data-font="Caveat">Caveat</button>
                 <button type="button" class="font-option" data-font="Merriweather">Merriweather</button>
             </div>
             
             <textarea class="notepad" 
                       id="notepad" 
-                      placeholder="Start writing here..."></textarea>
+                      placeholder="Start writing here..."
+                      aria-label="Notepad text area"></textarea>
             
             <div class="stats-bar">
-                <div class="counter" aria-live="polite">
-                    <i class="material-icons" aria-hidden="true">text_fields</i>
+                <div class="counter">
+                    <i class="material-icons">text_fields</i>
                     <span id="charCount">0</span> chars
                 </div>
-                <div class="counter" aria-live="polite">
-                    <i class="material-icons" aria-hidden="true">notes</i>
+                <div class="counter">
+                    <i class="material-icons">notes</i>
                     <span id="wordCount">0</span> words
                 </div>
                 <button type="button" class="delete-btn" id="deleteBtn">
-                    <i class="material-icons" aria-hidden="true">delete_forever</i>
+                    <i class="material-icons">delete_forever</i>
                     Clear
                 </button>
             </div>
         </main>
 
         <footer class="footer">
-            <div class="footer-content">
-                &copy; 2023 FlashPad. All rights reserved.
-            </div>
+            <p>&copy; 2023 FlashPad. All rights reserved.</p>
         </footer>
     </div>
 
     <div class="ad-container right-ad">
         <img src="https://storage.googleapis.com/website-production/uploads/2023/01/liveplan-banner-ad-example.png" 
-             alt="Advertisement banner" 
-             class="ad-banner" />
+             alt="Advertisement" 
+             class="ad-banner">
     </div>
 
     <script src="script.js"></script>
