@@ -45,10 +45,9 @@ body {
 }
 
 .logo {
-    width: min(100%, 180px);
+    width: min(100%, 200px);
     height: auto;
-    margin: 0 auto;
-    filter: brightness(0) invert(1);
+    margin: 0 auto 1.5rem;
     display: block;
 }
 
@@ -64,44 +63,37 @@ body {
     margin-bottom: 2rem; /* Added space above banner */
 }
 
-/* ... rest of main content styles ... */
+/* ... (keep previous .font-selector, .notepad, .stats-bar styles) ... */
 
-/* Banner Footer */
+/* Advertisement Banner */
 .banner-footer {
     flex-shrink: 0;
-    padding: 1rem 0;
+    padding: 0.5rem 0 1rem;
+    margin-top: auto;
     background: var(--surface);
     border-radius: 8px;
-    margin-top: auto;
-}
-
-.banner-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 1rem;
 }
 
 .banner-image {
     width: 100%;
+    max-width: 728px;
     height: auto;
     display: block;
     margin: 0 auto;
     border-radius: 4px;
 }
 
-/* Banner Sizes */
-@media (min-width: 768px) {
+@media (max-width: 768px) {
     .banner-image {
-        max-width: 728px; /* Desktop banner size */
-        height: 90px;
-    }
-}
-
-@media (max-width: 767px) {
-    .banner-image {
-        max-width: 320px; /* Mobile banner size */
+        max-width: 320px;
         height: 50px;
     }
+    
+    .logo {
+        width: 160px;
+    }
+    
+    /* ... (rest of mobile styles) ... */
 }
 
-/* ... rest of media queries ... */
+/* ... (remaining previous styles) ... */
