@@ -9,7 +9,12 @@ const firebaseConfig = {
   measurementId: "G-ZG76M648BT"
 };
 
-/ Define saveNote
+
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// Save Note Function
 function saveNote() {
   const text = document.getElementById('editor').value.trim();
   if (!text) {
@@ -28,5 +33,42 @@ function saveNote() {
   .catch((error) => alert("Error saving note: " + error));
 }
 
-// Attach saveNote to the button
+// Attach Save Button Listener
 document.getElementById('saveButton').addEventListener('click', saveNote);
+
+// Load Notes Function
+function loadNotes() {
+  db.collection("notes")
+    .orderBy("timestamp", "desc")
+    .onSnapshot((snapshot) => {
+      const notesList = document.getElementById('notesList');
+      notesList.innerHTML = "";
+      
+      snapshot.forEach((doc) => {
+        const note = doc.data();
+        const noteElement = document.createElement('div');
+        noteElement.className = 'note-card';
+        noteElement.innerHTML = `
+          <p>${note.text}</p>
+          <button class="btn btn-danger btn-sm deleteButton" data-id="${doc.id}">Delete</button>
+        `;
+        notesList.appendChild(noteElement);
+      });
+
+      // Attach delete handlers
+      document.querySelectorAll('.deleteButton').forEach(button => {
+        button.addEventListener('click', () => deleteNote(button.dataset.id));
+      });
+    });
+}
+
+// Delete Note Function
+function deleteNote(noteId) {
+  if (confirm("Are you sure you want to delete this note?")) {
+    db.collection("notes").doc(noteId).delete()
+      .catch((error) => alert("Error deleting note: " + error));
+  }
+}
+
+// Initialize on Page Load
+window.onload = loadNotes;
