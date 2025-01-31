@@ -1,11 +1,12 @@
 // Firebase Config (Replace with your details!)
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_BUCKET.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+ apiKey: "AIzaSyAOqXxXgSbTfVb91o5jvtiZz8UfWghNJPM",
+  authDomain: "flashpad-a98e5.firebaseapp.com",
+  projectId: "flashpad-a98e5",
+  storageBucket: "flashpad-a98e5.firebasestorage.app",
+  messagingSenderId: "326917682608",
+  appId: "1:326917682608:web:1ee257d85a4e509b981275",
+  measurementId: "G-ZG76M648BT"
 };
 
 // Initialize Firebase
