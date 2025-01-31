@@ -3,25 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flashpad - Online Notepad</title>
+    <title>Flashpad - Instant Note Saving</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { max-width: 800px; margin: 20px auto; padding: 20px; }
-        #editor { height: 300px; width: 100%; resize: vertical; }
-        .note-card { background-color: white; border: 1px solid #dee2e6; margin-bottom: 10px; padding: 10px; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="container">
-    <h1 class="text-primary mb-4">📝 Flashpad</h1>
-    <textarea id="editor" class="form-control mb-3" placeholder="Start typing..."></textarea>
-    <button class="btn btn-primary mb-3" id="saveButton">Save Note</button>
-    <div id="notesList"></div>
+<body>
+    <div class="container mt-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">📝 Flashpad</h2>
+                <small>Auto-saved to Firebase Cloud</small>
+            </div>
+            <div class="card-body">
+                <textarea id="editor" class="form-control mb-3" 
+                          placeholder="Start typing your note..." 
+                          rows="10"></textarea>
+                <button id="saveBtn" class="btn btn-success">
+                    💾 Save Note
+                </button>
+                <div id="statusToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            Note saved successfully!
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4" id="notesContainer">
+            <h4 class="mb-3">Saved Notes</h4>
+            <div id="notesList" class="row g-3"></div>
+        </div>
+    </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
-
-    <!-- App Script -->
-    <script src="script.js"></script>
+    <!-- Firebase SDK -->
+    <script type="module" src="firebase-config.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
